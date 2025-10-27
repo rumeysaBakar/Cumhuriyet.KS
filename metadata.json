@@ -1,5 +1,5 @@
 {
-  "name": "Atatürk'ten Mektup",
-  "description": "Cumhuriyetin 102. yılına özel, isminizi girerek Mustafa Kemal Atatürk'ten size özel ilham verici bir mektup alın.",
+  "name": "Atatürk'ten Mektup Var",
+  "description": "Cumhuriyet Bayramı'nın 102. yılına özel olarak kullanıcılara Gazi Mustafa Kemal Atatürk'ten kişiselleştirilmiş bir mektup üreten, yapay zeka destekli bir web uygulaması.",
   "requestFramePermissions": []
 }
