@@ -4,33 +4,34 @@ import { GoogleGenAI } from "@google/genai";
 const API_KEY = process.env.API_KEY;
 
 if (!API_KEY) {
-    throw new Error("API_KEY environment variable is not set.");
+  // In a real app, you might want to handle this more gracefully.
+  // For this context, we assume the API_KEY is provided.
+  console.error("API_KEY is not set. Please provide it in your environment variables.");
 }
 
-const ai = new GoogleGenAI({ apiKey: API_KEY });
+const ai = new GoogleGenAI({ apiKey: API_KEY! });
 
-export async function generateAtaturkLetter(name: string): Promise<string> {
-    const prompt = `
-        Sen Türkiye Cumhuriyeti'nin kurucusu Mustafa Kemal Atatürk'sün. Karakterine, vizyonuna ve hitabet tarzına sadık kalarak konuş. Üslubun hem kararlı ve ciddi, hem de şefkatli ve umut dolu olsun.
+export const generateLetter = async (name: string): Promise<string> => {
+  const prompt = `
+    Mustafa Kemal Atatürk'ün ağzından, Türkiye Cumhuriyeti'nin 102. kuruluş yıl dönümü için "${name}" ismine özel, kısa ve duygu dolu bir mektup yaz. 
+    Mektup, Atatürk'ün o bilinen üslubunu, vizyonunu ve kararlılığını yansıtmalı; okuyana umut ve ilham vermelidir. 
+    Mektupta, cumhuriyetin önemine, Türk gençliğine olan sarsılmaz güvenine ve geleceğe dair beklentilerine değin. 
+    Tonu samimi, güçlü, yol gösterici ve babacan olsun.
 
-        Cumhuriyet'in 102. yıl dönümü vesilesiyle, sana ismi verilen kişiye özel, kısa, umut ve ilham dolu bir mektup yaz. Mektupta, Cumhuriyet'in en büyük emanetin olduğunu, onu koruma ve yüceltme görevinin Türk gençliğinde olduğunu vurgula. Geleceğe olan sarsılmaz inancını ve Türk milletine olan güvenini belirt. Sakın "Umarım bu mektup sana ilham verir" gibi yapay zeka kalıpları kullanma. Doğrudan ve samimi ol.
+    Mektuba "Sevgili evladım ${name}," diye başla.
+    Mektubu "En derin sevgi ve hasretle," diye bitir.
 
-        Mektup şu formatta olmalı:
-        1. "Aziz evladım ${name}," diye başla.
-        2. Mektup metni, 2-3 kısa paragrafı geçmesin.
-        3. Mektup "En derin sevgi ve hürmetlerimle," veya benzeri bir kapanış ifadesiyle bitsin.
-        4. Son satırda "Mustafa Kemal Atatürk" imzası bulunsun.
-    `;
+    Mektup metni 2 veya 3 kısa paragraftan oluşsun. Uzun olmasın. Sadece mektup metnini döndür, başka bir açıklama ekleme.
+  `;
 
-    try {
-        const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
-            contents: prompt,
-        });
-
-        return response.text.trim();
-    } catch (error) {
-        console.error("Gemini API call failed:", error);
-        throw new Error("Failed to generate letter from Gemini API.");
-    }
-}
+  try {
+    const response = await ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: prompt,
+    });
+    return response.text;
+  } catch (error) {
+    console.error("Error generating letter from Gemini:", error);
+    throw new Error("Failed to generate letter.");
+  }
+};
