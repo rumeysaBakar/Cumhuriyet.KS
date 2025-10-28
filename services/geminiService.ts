@@ -26,7 +26,7 @@ export const generateLetter = async (name: string): Promise<string> => {
 
   try {
     const response = await ai.models.generateContent({
-        model: 'gemini-2.5-pro',
+        model: 'gemini-2.5-flash',
         contents: prompt,
     });
     return response.text;
